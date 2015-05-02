@@ -2,11 +2,11 @@
 
 Summary: Free reimplementation of the OpenDivX video codec
 Name: xvidcore
-Version: 1.3.2
-Release: 15%{?dist}
+Version: 1.3.3
+Release: 16%{?dist}
 License: XviD
 Group: System Environment/Libraries
-Source0: http://downloads.xvid.org/downloads/%{name}-%{version}.tar.gz
+Source0: http://downloads.xvid.org/downloads/%{name}-%{version}.tar.bz2
 URL: http://www.xvid.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: /sbin/ldconfig
@@ -34,6 +34,7 @@ cd build/generic
 make install DESTDIR=%{buildroot}
 /sbin/ldconfig -n %{buildroot}%{_libdir}
 cd %{buildroot}%{_libdir}
+rm -f libxvidcore.so
 for x in `ls *.so.* | grep '\.so\.[^.]*$'`; do
   chmod 0755 $x
   ln -s $x `echo $x | sed -e's,\.so.*,.so,'`
@@ -48,6 +49,11 @@ rm -rf %{buildroot}
 %doc CodingStyle doc examples
 
 %changelog
+* Sat May 2 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.3-15
+- Update to 1.3.3
+- Changed source file to bz2
+- Removed libxvidcore.so-file preventing correct build
+
 * Wed Sep 11 2013 Paulo Roma <roma@lcg.ufrj.br> - 1.3.2-14
 - Update to 1.3.2.
 
