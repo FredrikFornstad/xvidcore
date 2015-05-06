@@ -11,7 +11,7 @@ URL: http://www.xvid.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: /sbin/ldconfig
 %ifarch %ix86 ia64
-BuildRequires: nasm
+BuildRequires: nasm, atrpms-rpm-config
 %endif
 %lib_dependencies
 Obsoletes: xvidcore-static <= %{eversion}
@@ -49,6 +49,9 @@ rm -rf %{buildroot}
 %doc CodingStyle doc examples
 
 %changelog
+* Wed May 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.3-16
+- Added buildrequirement atrpms-rpm-config
+
 * Sat May 2 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.3-15
 - Update to 1.3.3
 - Changed source file to bz2
