@@ -1,9 +1,9 @@
-%lib_package xvidcore 4
+%global libver 4.3
 
 Summary: Free reimplementation of the OpenDivX video codec
 Name: xvidcore
 Version: 1.3.3
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: XviD
 Group: System Environment/Libraries
 Source0: http://downloads.xvid.org/downloads/%{name}-%{version}.tar.bz2
@@ -13,12 +13,28 @@ BuildRequires: /sbin/ldconfig
 %ifarch %ix86 ia64
 BuildRequires: nasm, atrpms-rpm-config
 %endif
-%lib_dependencies
 Obsoletes: xvidcore-static <= %{eversion}
+Requires: %{name}-libs_%{libver}
 
 %description
 Free reimplementation of the OpenDivX video codec. You can play OpenDivX
 and DivX4 videos with it, as well as encode compatible files.
+
+%package libs_%{libver}
+Summary: xvidcore codec shared library
+Group: Development/Libraries
+Obsoletes: libxvidcore*
+
+%description libs_%{libver}
+This package contains the xvidcore shared library
+
+%package devel
+Summary: xvidcore codec shared library development files
+Group: Development/Libraries
+Requires: %{name}-libs_%{libver}
+
+%description devel
+This package contains the xvidcore shared library development files
 
 %prep
 %setup -q -n %{name}
@@ -40,6 +56,10 @@ for x in `ls *.so.* | grep '\.so\.[^.]*$'`; do
   ln -s $x `echo $x | sed -e's,\.so.*,.so,'`
 done
 
+%post libs_%{libver} -p /sbin/ldconfig
+
+%postun libs_%{libver} -p /sbin/ldconfig
+
 %clean
 rm -rf %{buildroot}
 
@@ -48,7 +68,21 @@ rm -rf %{buildroot}
 %doc LICENSE README* ChangeLog AUTHORS TODO
 %doc CodingStyle doc examples
 
+%files libs_%{libver}
+%defattr(-,root,root,-)
+%{_libdir}/libxvidcore.so.%{libver}
+
+%files devel
+%defattr(-,root,root,-)
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/*.so.4
+%{_libdir}/*.a
+
 %changelog
+* Sat Jun 13 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.3-17
+- Removed dependency on atrpms scripts to comply with ClearOS policy
+
 * Wed May 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.3-16
 - Added buildrequirement atrpms-rpm-config
 
