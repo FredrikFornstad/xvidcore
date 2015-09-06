@@ -3,7 +3,7 @@
 Summary: Free reimplementation of the OpenDivX video codec
 Name: xvidcore
 Version: 1.3.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: XviD
 Group: System Environment/Libraries
 Source0: http://downloads.xvid.org/downloads/%{name}-%{version}.tar.bz2
@@ -11,7 +11,7 @@ URL: http://www.xvid.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: /sbin/ldconfig
 %ifarch %ix86 ia64
-BuildRequires: nasm, atrpms-rpm-config
+BuildRequires: nasm
 %endif
 Obsoletes: xvidcore-static <= %{eversion}
 Requires: %{name}-libs_%{libver}
@@ -80,6 +80,9 @@ rm -rf %{buildroot}
 %{_libdir}/*.a
 
 %changelog
+* Sun Sep 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.4-2
+- Removed obsolete buildreq for i686
+
 * Mon Jun 22 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 1.3.4-1
 - New upstream bugfix release
 
